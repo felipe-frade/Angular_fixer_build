@@ -44,7 +44,7 @@ while(int(count) == 1):
                         
                         # gancho
                         if("outputPath" in line):
-                            print("#I found this guy: \n" + line)
+                            print("# I found this guy: \n" + line)
                             print("# These guy is where your project will be placed after building")
                             print("# Do you wanna replace for something or do I continue the process on my on?")
                             types = input('\n# 1 - I want to do it manually\n# 2 - Do your magic\n')
@@ -67,6 +67,8 @@ while(int(count) == 1):
                         if("<base" in line):
                             custom_line = custom_line.replace("\\", "/")
                             all_lines[index_line] = line[:line.find('href=') + 5] + '"' + custom_line.replace("C:/xampp/htdocs", "http://localhost") + '/">\n'
+                            print("# I found this guy: \n" + line)
+                            print("# I'll replace for this one: \n" + all_lines[index_line])
 
                         index_line = index_line + 1
 
@@ -76,5 +78,5 @@ while(int(count) == 1):
                     write_this(file_path, "".join(all_lines))
                     fix.close()
     
-    count = input('\nDo you wanna continue?\n1 - sim\n2 - não\n')
+    count = input('\nDo you wanna continue?\n1 - yes\n2 - no\n')
 print('\nBye!')
