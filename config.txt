@@ -1,4 +1,7 @@
-felipe pereira
-felipe-frade
-programador
-sim
+nome:felipe pereira
+user:felipe-frade
+nivel:programador
+config:sim
+quick:sim
+language:2
+save-language:0

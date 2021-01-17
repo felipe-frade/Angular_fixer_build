@@ -2,46 +2,51 @@
 
 import os
 import tkinter
-from tkinter import *  
 from glob import glob
 from time import sleep
 
+import variables as var
+import config as con
+import comands as cmd
 import input_manager as im
 import file_manager as fl
-from variables import *
 
-# variables
-path = os.path.dirname(os.path.abspath(__file__))
+from variables_pt_br import Messages as br 
+from variables_en_us import Messages as us
+
+mes = br()
 
 # CONFIGURATION ***************************
 
-def config():
-    config = fl.read_this(PATH + "\\config.txt")
-
-    if(len(config[0]) > 0):
-        if(len(config[0]) == 4):
-            print('Já esteve por aqui? Vamos continuar...')
-        else:
-            print('Acho que tem algo de errado com seu arquivo de configuração!')
+def import_language():
+    global mes
+    if(var.language == 1):
+        mes = br()
+    elif(var.language == 2):
+        mes = us()
     else:
-        print('Sem arquivo de configuração... tsc tsc tsc')
-        # ask about the configuration 
+        print('Sem modulo de linguagem')
+    
+def define_speed():
+    var.tempo = int(input(mes.msg_esta_com_tempo))
+    while(var.tempo not in [1,2]):
+        cmd.clear_shell()
+        var.tempo = int(input(mes.msg_esta_com_tempo))
+
+def end():
+    cmd.clear_shell()
+    exit()
+
 
 # CONFIGURATION ***************************
 
 def main():
-    print('Você está com tempo? (vai ser rápido)')
-    im.config()
+    con.config()
+    import_language()
+    define_speed()
 
-    config()
+    cmd.clear_shell()
 
-    exit()
-
-    write_this('C:\\Users\\dudu_\\Documents\\teste.txt', 'oi')
-
-    print ("wait here")
-    exit()
-    
     count = 1
     custom_line = ""
     while(int(count) == 1):
@@ -49,16 +54,17 @@ def main():
 
         # enquanto ele não encontrar o caminho
         while(locate == 0):
-            project = input('\n# Please tell me the name of the project\n')
-            print('# Searching for project (' + project + ') in(' + path + ')...')
-            if os.path.isdir(path + '\\' + project):
-                path = path + '\\' + project
+            project = input(mes.msg_name_project)
+            print('# Searching for project (' + project + ') in(' + var.PATH + ')...')
+            if os.path.isdir(var.PATH + '\\' + project):
+                var.PATH = var.PATH + '\\' + project
                 locate = 1
             else:
                 print('# Folder not found!')
 
+        end()
         # percorre o projeto todo a busca dos arquivos
-        for root, dirs, files in os.walk(path):
+        for root, dirs, files in os.walk(var.PATH):
             for fil in files:
                 if("node_modules" not in root):
                     if("angular.json" in fil or "environment.ts" in fil or "index.html" in fil):
@@ -105,7 +111,7 @@ def main():
                             
                         
                     if("angular.json" in fil or "environment.ts" in fil or "index.html" in fil):
-                        write_this(file_path, "".join(all_lines))
+                        fl.write_this(file_path, "".join(all_lines))
                         fix.close()
         
         count = input('\nDo you wanna continue?\n1 - yes\n2 - no\n')
